@@ -12,6 +12,8 @@ public class Terry {
         Scanner in = new Scanner(System.in);
         boolean isLooping = true;
 
+        TaskList tasks = new TaskList(100);
+
         while(isLooping){
             String input = in.nextLine();
             if(input.contains("bye")){
@@ -20,9 +22,16 @@ public class Terry {
                 System.out.println(space + " Bye. Hope to see you again soon!");
                 System.out.println(line);
             }
-            else {
+            else if(input.equals("list")){
                 System.out.println(line);
-                System.out.println(space + " " + input);
+                tasks.listTasks();
+                System.out.println(line + "\n");
+            }
+            else {
+                //add input to list
+                tasks.addTask(input);
+                System.out.println(line);
+                System.out.println(space + " added: " + input);
                 System.out.println(line + "\n");
             }
         }
