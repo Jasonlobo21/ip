@@ -27,6 +27,20 @@ public class Terry {
                 tasks.listTasks();
                 System.out.println(line + "\n");
             }
+            else if (input.contains("unmark")) {
+                System.out.println(line);
+                System.out.println(space + " OK, I've marked this task as not done yet:");
+                int index = Integer.parseInt(input.substring(7));
+                tasks.unmarkTask(index);
+                System.out.println(line + "\n");
+            }
+            else if(input.startsWith("mark")){
+                System.out.println(line);
+                System.out.println(space + " Nice! I've marked this task as done:");
+                int index = Integer.parseInt(input.substring(5));
+                tasks.markTask(index);
+                System.out.println(line + "\n");
+            }
             else {
                 //add input to list
                 tasks.addTask(input);
