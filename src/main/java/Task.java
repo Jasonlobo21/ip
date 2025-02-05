@@ -4,23 +4,17 @@ public class Task {
     /** Number of tasks currently in the list. */
     private boolean isMarked;
 
+    private String taskType;
+
     /**
      * Creates a new task with the given name.
      *
      * @param name the name or description of the task.
      */
-    public Task(String name) {
+    public Task(String name, String type) {
         this.name = name;
         isMarked = false;
-    }
-
-    /**
-     * Returns the name of the task.
-     *
-     * @return the task's name.
-     */
-    public String getName() {
-        return name;
+        this.taskType = type;
     }
 
     /**
@@ -44,5 +38,10 @@ public class Task {
      */
     public String getStatusIcon() {
         return (isMarked ? "[X] " : "[ ] ");
+    }
+
+    @Override
+    public String toString() {
+        return taskType + getStatusIcon() + name;
     }
 }

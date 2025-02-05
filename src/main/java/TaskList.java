@@ -17,13 +17,25 @@ public class TaskList {
         taskCount = 0;
     }
 
-    /**
-     * Adds a task to the list.
-     *
-     * @param taskName the task to be added.
-     */
-    public void addTask(String taskName) {
-        taskArray[taskCount++] = new Task(taskName);
+    public int getTaskCount() {
+        return taskCount;
+    }
+
+    public void addTodo(String taskName) {
+        taskArray[taskCount] = new Todo(taskName);
+        System.out.println("       " + taskArray[taskCount]);
+        taskCount++;
+    }
+
+    public void addDealine(String taskName, String dueDate) {
+        taskArray[taskCount] = new Deadline(taskName, dueDate);
+        System.out.println("       " + taskArray[taskCount]);
+        taskCount++;
+    }
+    public void addEvent(String taskName, String[] timePeriod) {
+        taskArray[taskCount] = new Event(taskName, timePeriod);
+        System.out.println("       " + taskArray[taskCount]);
+        taskCount++;
     }
 
     /**
@@ -33,7 +45,7 @@ public class TaskList {
      */
     public void markTask(int index) {
         taskArray[index - 1].mark();
-        System.out.println("       [X] " + taskArray[index - 1].getName());
+        System.out.println("       " + taskArray[index - 1]);
     }
 
     /**
@@ -43,7 +55,7 @@ public class TaskList {
      */
     public void unmarkTask(int index) {
         taskArray[index - 1].unmark();
-        System.out.println("       [ ] " + taskArray[index - 1].getName());
+        System.out.println("       " + taskArray[index - 1]);
     }
 
     /**
@@ -55,8 +67,7 @@ public class TaskList {
         }
         else {
             for (int i = 0; i < taskCount; i++) {
-                String statusIcon = taskArray[i].getStatusIcon();
-                System.out.println("     " + (i + 1) + "." + statusIcon + taskArray[i].getName());
+                System.out.println("     " + (i + 1) + ". " + taskArray[i]);
             }
         }
     }

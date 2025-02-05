@@ -16,7 +16,7 @@ public class Terry {
 
         while(isLooping){
             String input = in.nextLine();
-            if(input.contains("bye")){
+            if(input.startsWith("bye")){
                 isLooping = false;
                 System.out.println(line);
                 System.out.println(space + " Bye. Hope to see you again soon!");
@@ -27,7 +27,7 @@ public class Terry {
                 tasks.listTasks();
                 System.out.println(line + "\n");
             }
-            else if (input.contains("unmark")) {
+            else if (input.startsWith("unmark")) {
                 System.out.println(line);
                 System.out.println(space + " OK, I've marked this task as not done yet:");
                 int index = Integer.parseInt(input.substring(7));
@@ -41,11 +41,29 @@ public class Terry {
                 tasks.markTask(index);
                 System.out.println(line + "\n");
             }
-            else {
-                //add input to list
-                tasks.addTask(input);
+            else if (input.startsWith("todo")) {
                 System.out.println(line);
-                System.out.println(space + " added: " + input);
+                System.out.println(space + " Got it. I've added this task:");
+                tasks.addTodo(input.substring(5));
+                System.out.println(space + " Now you have " + tasks.getTaskCount() + " tasks in the list.");
+                System.out.println(line + "\n");
+            }
+            else if (input.startsWith("deadline")) {
+                System.out.println(line);
+                System.out.println(space + " Got it. I've added this task:");
+                String[] deadline = input.substring(9).split("/");
+                tasks.addDealine(deadline[0], deadline[1]);
+                System.out.println(space + " Now you have " + tasks.getTaskCount() + " tasks in the list.");
+                System.out.println(line + "\n");
+            }
+            else if (input.startsWith("event")) {
+                System.out.println(line);
+                System.out.println(space + " Got it. I've added this task:");
+                String[] deadline = input.substring(6).split("/");
+                deadline[1] = deadline[1].substring(5);
+                deadline[2] = deadline[2].substring(3);
+                tasks.addEvent(deadline[0], deadline);
+                System.out.println(space + " Now you have " + tasks.getTaskCount() + " tasks in the list.");
                 System.out.println(line + "\n");
             }
         }
