@@ -27,7 +27,7 @@ public class TaskList {
         taskCount++;
     }
 
-    public void addDealine(String taskName, String dueDate) {
+    public void addDeadline(String taskName, String dueDate) {
         taskArray[taskCount] = new Deadline(taskName, dueDate);
         System.out.println("       " + taskArray[taskCount]);
         taskCount++;
@@ -64,8 +64,7 @@ public class TaskList {
     public void listTasks() {
         if(taskCount == 0) {
             System.out.println("    No tasks available.");
-        }
-        else {
+        } else {
             for (int i = 0; i < taskCount; i++) {
                 System.out.println("     " + (i + 1) + ". " + taskArray[i]);
             }
