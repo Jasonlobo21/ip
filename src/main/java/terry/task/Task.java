@@ -1,3 +1,5 @@
+package terry.task;
+
 public class Task {
     /** Array to store tasks. */
     private String name;

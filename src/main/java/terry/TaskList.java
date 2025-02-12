@@ -1,3 +1,11 @@
+package terry;
+
+import terry.exception.TaskListFullException;
+import terry.task.Deadline;
+import terry.task.Event;
+import terry.task.Task;
+import terry.task.Todo;
+
 /**
  * Represents a list of tasks with a fixed capacity.
  */
@@ -6,6 +14,8 @@ public class TaskList {
     private Task[] taskArray;
     /** Number of tasks currently in the list. */
     private int taskCount;
+
+    final int MAX_TASKS = 100;
 
     /**
      * Creates a new TaskList with the specified capacity.
@@ -21,18 +31,27 @@ public class TaskList {
         return taskCount;
     }
 
-    public void addTodo(String taskName) {
+    public void addTodo(String taskName) throws TaskListFullException {
+        if(taskCount == MAX_TASKS) {
+            throw new TaskListFullException();
+        }
         taskArray[taskCount] = new Todo(taskName);
         System.out.println("       " + taskArray[taskCount]);
         taskCount++;
     }
 
-    public void addDeadline(String taskName, String dueDate) {
+    public void addDeadline(String taskName, String dueDate) throws TaskListFullException {
+        if(taskCount == MAX_TASKS) {
+            throw new TaskListFullException();
+        }
         taskArray[taskCount] = new Deadline(taskName, dueDate);
         System.out.println("       " + taskArray[taskCount]);
         taskCount++;
     }
-    public void addEvent(String taskName, String[] timePeriod) {
+    public void addEvent(String taskName, String[] timePeriod) throws TaskListFullException {
+        if(taskCount == MAX_TASKS) {
+            throw new TaskListFullException();
+        }
         taskArray[taskCount] = new Event(taskName, timePeriod);
         System.out.println("       " + taskArray[taskCount]);
         taskCount++;

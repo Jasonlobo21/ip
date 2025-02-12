@@ -1,4 +1,6 @@
-public class Event extends Task{
+package terry.task;
+
+public class Event extends Task {
     private String[] timePeriod;
 
     public Event(String name, String[] timePeriod) {
