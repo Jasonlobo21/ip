@@ -6,65 +6,54 @@ import terry.task.Event;
 import terry.task.Task;
 import terry.task.Todo;
 
+import java.util.ArrayList;
+import java.util.List;
 /**
  * Represents a list of tasks with a fixed capacity.
  */
 public class TaskList {
     /** Array to store tasks. */
-    private Task[] taskArray;
-    /** Number of tasks currently in the list. */
-    private int taskCount;
+    private List<Task> tasks;
 
     final int MAX_TASKS = 100;
 
-    /**
-     * Creates a new TaskList with the specified capacity.
-     *
-     * @param capacity the maximum number of tasks.
-     */
-    public TaskList(int capacity) {
-        taskArray = new Task[capacity];
-        taskCount = 0;
+
+    public TaskList() {
+        tasks = new ArrayList<>();
     }
 
     public int getTaskCount() {
-        return taskCount;
+        return tasks.size();
     }
 
     public void addTodo(String taskName) throws TaskListFullException {
-        if(taskCount == MAX_TASKS) {
+        if (tasks.size() >= 100) {
             throw new TaskListFullException();
         }
-        taskArray[taskCount] = new Todo(taskName);
-        System.out.println("       " + taskArray[taskCount]);
-        taskCount++;
+        tasks.add(new Todo(taskName));
+        System.out.println("       " + tasks.get(tasks.size() - 1));
     }
 
     public void addDeadline(String taskName, String dueDate) throws TaskListFullException {
-        if(taskCount == MAX_TASKS) {
+        if (tasks.size() >= 100) {
             throw new TaskListFullException();
         }
-        taskArray[taskCount] = new Deadline(taskName, dueDate);
-        System.out.println("       " + taskArray[taskCount]);
-        taskCount++;
+        tasks.add(new Deadline(taskName, dueDate));
+        System.out.println("       " + tasks.get(tasks.size() - 1));
     }
     public void addEvent(String taskName, String[] timePeriod) throws TaskListFullException {
-        if(taskCount == MAX_TASKS) {
+        if (tasks.size() >= 100) {
             throw new TaskListFullException();
         }
-        taskArray[taskCount] = new Event(taskName, timePeriod);
-        System.out.println("       " + taskArray[taskCount]);
-        taskCount++;
+        tasks.add(new Event(taskName, timePeriod));
+        System.out.println("       " + tasks.get(tasks.size() - 1));
     }
 
     public void deleteTask(int index) {
         System.out.println("       Noted. I've removed this task:");
-        System.out.println("         " + taskArray[index - 1]);
-        for (int i = index - 1; i < taskCount - 1; i++) {
-            taskArray[i] = taskArray[i + 1];
-        }
-        taskCount--;
-        System.out.println("       Now you have " + taskCount + " tasks in the list.");
+        System.out.println("         " + tasks.get(index - 1));
+        tasks.remove(index - 1);
+        System.out.println("       Now you have " + tasks.size() + " tasks in the list.");
     }
 
     /**
@@ -73,8 +62,8 @@ public class TaskList {
      * @param index the 1-based index of the task to mark as done.
      */
     public void markTask(int index) {
-        taskArray[index - 1].mark();
-        System.out.println("       " + taskArray[index - 1]);
+        tasks.get(index - 1).mark();
+        System.out.println("       " + tasks.get(index - 1));
     }
 
     /**
@@ -83,19 +72,19 @@ public class TaskList {
      * @param index the 1-based index of the task to mark as not done.
      */
     public void unmarkTask(int index) {
-        taskArray[index - 1].unmark();
-        System.out.println("       " + taskArray[index - 1]);
+        tasks.get(index - 1).unmark();
+        System.out.println("       " + tasks.get(index - 1));
     }
 
     /**
      * Lists all tasks in the list along with their status.
      */
     public void listTasks() {
-        if(taskCount == 0) {
+        if (tasks.isEmpty()) {
             System.out.println("    No tasks available.");
         } else {
-            for (int i = 0; i < taskCount; i++) {
-                System.out.println("     " + (i + 1) + ". " + taskArray[i]);
+            for (int i = 0; i < tasks.size(); i++) {
+                System.out.println("     " + (i + 1) + ". " + tasks.get(i));
             }
         }
     }

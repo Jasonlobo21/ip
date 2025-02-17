@@ -25,7 +25,7 @@ public class Terry {
         Scanner in = new Scanner(System.in);
         boolean isLooping = true;
 
-        TaskList tasks = new TaskList(MAX_TASKS);
+        TaskList tasks = new TaskList();
 
         while (isLooping) {
 
