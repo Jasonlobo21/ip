@@ -18,6 +18,7 @@ public class Terry {
         final String COMMAND_DEADLINE = "deadline";
         final String COMMAND_EVENT = "event";
         final String COMMAND_HELP = "help";
+        final String COMMAND_DELETE = "delete";
 
         handleGreetings(DIVIDER, SPACES);
 
@@ -56,23 +57,15 @@ public class Terry {
                     case COMMAND_HELP:
                         handleHelp(DIVIDER, SPACES);
                         break;
+                    case COMMAND_DELETE:
+                        handleDelete(tasks, input, DIVIDER, SPACES);
+                        break;
                     default:
                         handleUnknownCommand(DIVIDER, SPACES);
                         break;
                 }
-            } catch (TaskListFullException e) {
-                System.out.println(e.getMessage());
-                System.out.println(DIVIDER + "\n");
-            } catch (InvalidMarkException e) {
-                System.out.println(e.getMessage());
-                System.out.println(DIVIDER + "\n");
-            } catch (InvalidTodoException e) {
-                System.out.println(e.getMessage());
-                System.out.println(DIVIDER + "\n");
-            } catch (InvalidDeadlineException e) {
-                System.out.println(e.getMessage());
-                System.out.println(DIVIDER + "\n");
-            } catch (InvalidEventException e) {
+            } catch (TaskListFullException | InvalidMarkException | InvalidTodoException | InvalidDeadlineException |
+                     InvalidEventException  | InvalidDeleteException e) {
                 System.out.println(e.getMessage());
                 System.out.println(DIVIDER + "\n");
             }
@@ -105,6 +98,9 @@ public class Terry {
         if (parts.length < 2) { // Check if the input has fewer than 2 parts
             throw new InvalidMarkException(tasks.getTaskCount(), "unmark");
         }
+        if(!parts[1].matches("\\d+")) {
+            throw new InvalidMarkException(tasks.getTaskCount(), "unmark");
+        }
         int index = Integer.parseInt(parts[1]);
         if (index < 1 || index > tasks.getTaskCount()) { // Validate task number range
             throw new InvalidMarkException(tasks.getTaskCount(), "unmark");
@@ -118,6 +114,9 @@ public class Terry {
         System.out.println(DIVIDER);
         String[] parts = input.trim().split(" ");
         if (parts.length < 2) {
+            throw new InvalidMarkException(tasks.getTaskCount(), "mark");
+        }
+        if(!parts[1].matches("\\d+")) {
             throw new InvalidMarkException(tasks.getTaskCount(), "mark");
         }
         int index = Integer.parseInt(parts[1]);
@@ -183,6 +182,23 @@ public class Terry {
         System.out.println(SPACES + " 5. mark <task number> - Mark a task as done");
         System.out.println(SPACES + " 6. unmark <task number> - Mark a task as not done");
         System.out.println(SPACES + " 7. bye - Exit the program");
+        System.out.println(DIVIDER + "\n");
+    }
+
+    private static void handleDelete(TaskList tasks, String input, String DIVIDER, String SPACES) throws InvalidDeleteException {
+        System.out.println(DIVIDER);
+        String[] parts = input.split(" ");
+        if (parts.length < 2) {
+            throw new InvalidDeleteException();
+        }
+        if(!parts[1].matches("\\d+")) {
+            throw new InvalidDeleteException();
+        }
+        int index = Integer.parseInt(parts[1]);
+        if (index < 1 || index > tasks.getTaskCount()) {
+            throw new InvalidDeleteException();
+        }
+        tasks.deleteTask(index);
         System.out.println(DIVIDER + "\n");
     }
 

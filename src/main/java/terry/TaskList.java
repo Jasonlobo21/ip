@@ -57,6 +57,16 @@ public class TaskList {
         taskCount++;
     }
 
+    public void deleteTask(int index) {
+        System.out.println("       Noted. I've removed this task:");
+        System.out.println("         " + taskArray[index - 1]);
+        for (int i = index - 1; i < taskCount - 1; i++) {
+            taskArray[i] = taskArray[i + 1];
+        }
+        taskCount--;
+        System.out.println("       Now you have " + taskCount + " tasks in the list.");
+    }
+
     /**
      * Marks the task at the specified index as done.
      *
