@@ -1,15 +1,25 @@
 package terry.task;
 
 public class Event extends Task {
-    private String[] timePeriod;
+    private String from;
+    private String to;
 
-    public Event(String name, String[] timePeriod) {
+    public Event(String name, String from, String to) {
         super(name, "[E]");
-        this.timePeriod = timePeriod;
+        this.from = from;
+        this.to = to;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public String getTo() {
+        return to;
     }
 
     @Override
     public String toString() {
-        return String.format("%s (from: %sto: %s)", super.toString(), timePeriod[1], timePeriod[2]);
+        return String.format("%s (from: %s to: %s)", super.toString(), from, to);
     }
 }

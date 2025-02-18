@@ -19,6 +19,10 @@ public class Task {
         this.taskType = type;
     }
 
+    public String getName() {
+        return name;
+    }
+
     /**
      * Marks the task as done.
      */
@@ -31,6 +35,10 @@ public class Task {
      */
     public void unmark() {
         this.isMarked = false;
+    }
+
+    public boolean isMarked() {
+        return isMarked;
     }
 
     /**

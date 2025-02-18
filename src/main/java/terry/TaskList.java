@@ -27,6 +27,10 @@ public class TaskList {
         taskCount = 0;
     }
 
+    public Task getTask(int index) {
+        return taskArray[index];
+    }
+
     public int getTaskCount() {
         return taskCount;
     }
@@ -48,11 +52,11 @@ public class TaskList {
         System.out.println("       " + taskArray[taskCount]);
         taskCount++;
     }
-    public void addEvent(String taskName, String[] timePeriod) throws TaskListFullException {
+    public void addEvent(String taskName, String from, String to) throws TaskListFullException {
         if(taskCount == MAX_TASKS) {
             throw new TaskListFullException();
         }
-        taskArray[taskCount] = new Event(taskName, timePeriod);
+        taskArray[taskCount] = new Event(taskName, from, to);
         System.out.println("       " + taskArray[taskCount]);
         taskCount++;
     }
@@ -88,5 +92,11 @@ public class TaskList {
                 System.out.println("     " + (i + 1) + ". " + taskArray[i]);
             }
         }
+    }
+
+    public void addTask(Task task) {
+        taskArray[taskCount] = task;
+        System.out.println("       " + taskArray[taskCount]);
+        taskCount++;
     }
 }
