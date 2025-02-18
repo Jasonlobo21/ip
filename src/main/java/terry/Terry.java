@@ -220,6 +220,7 @@ public class Terry {
             throw new InvalidDeleteException();
         }
         tasks.deleteTask(index);
+        rewriteTasksToFile();
         System.out.println(DIVIDER + "\n");
     }
 

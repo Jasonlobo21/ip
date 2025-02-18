@@ -100,10 +100,9 @@ public class TaskList {
         System.out.println("       " + tasks.get(tasks.size() - 1));
     }
 
+
     public void add(Task task) {
         tasks.add(task);
     }
-
-
 }
 
