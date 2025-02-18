@@ -1,15 +1,30 @@
 package terry;
 
 import terry.exception.*;
+import terry.task.Deadline;
+import terry.task.Event;
+import terry.task.Task;
+import terry.task.Todo;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class Terry {
-    public static void main(String[] args) {
 
-        final String SPACES = "    ";
-        final String DIVIDER = SPACES + "____________________________________";
-        final int MAX_TASKS = 100;
+    private static final String DATA_DIRECTORY = "data";
+    private static final String DATA_FILE = "terry.txt";
+    private static final Path DATA_PATH = Paths.get(DATA_DIRECTORY, DATA_FILE);
+
+    private static TaskList tasks = new TaskList();
+    private static final String SPACES = "    ";
+    private static final String DIVIDER = SPACES + "____________________________________";
+
+    public static void main(String[] args) throws IOException {
+
         final String COMMAND_BYE = "bye";
         final String COMMAND_LIST = "list";
         final String COMMAND_MARK = "mark";
@@ -20,48 +35,48 @@ public class Terry {
         final String COMMAND_HELP = "help";
         final String COMMAND_DELETE = "delete";
 
-        handleGreetings(DIVIDER, SPACES);
-
+        handleGreetings();
+        loadTasks();
         Scanner in = new Scanner(System.in);
         boolean isLooping = true;
-
-        TaskList tasks = new TaskList();
 
         while (isLooping) {
 
             try{
                 String input = in.nextLine();
-                String command = input.split(" ")[0];
+                String command = input.split(" ")[0].toLowerCase();
                 switch (command) {
                     case COMMAND_BYE:
-                        isLooping = handleBye(DIVIDER, SPACES);
+                        isLooping = handleBye();
                         break;
                     case COMMAND_LIST:
-                        handleList(tasks, DIVIDER);
+                        handleList();
                         break;
                     case COMMAND_UNMARK:
-                        handleUnmark(tasks, input, DIVIDER, SPACES);
+                        handleUnmark(input);
+                        rewriteTasksToFile();
                         break;
                     case COMMAND_MARK:
-                        handleMark(tasks, input, DIVIDER, SPACES);
+                        handleMark(input);
+                        rewriteTasksToFile();
                         break;
                     case COMMAND_TODO:
-                        handleTodo(tasks, input, DIVIDER, SPACES);
+                        handleTodo(input);
                         break;
                     case COMMAND_DEADLINE:
-                        handleDeadline(tasks, input, DIVIDER, SPACES);
+                        handleDeadline(input);
                         break;
                     case COMMAND_EVENT:
-                        handleEvent(tasks, input, DIVIDER, SPACES);
+                        handleEvent(input);
                         break;
                     case COMMAND_HELP:
-                        handleHelp(DIVIDER, SPACES);
+                        handleHelp();
                         break;
                     case COMMAND_DELETE:
-                        handleDelete(tasks, input, DIVIDER, SPACES);
+                        handleDelete(input);
                         break;
                     default:
-                        handleUnknownCommand(DIVIDER, SPACES);
+                        handleUnknownCommand();
                         break;
                 }
             } catch (TaskListFullException | InvalidMarkException | InvalidTodoException | InvalidDeadlineException |
@@ -72,27 +87,27 @@ public class Terry {
         }
     }
 
-    private static void handleGreetings(String DIVIDER, String SPACES) {
+    private static void handleGreetings() {
         System.out.println(DIVIDER);
         System.out.println(SPACES + " Hello! I'm Terry ☺\n" +
                 SPACES + " What can I do for you?");
         System.out.println(DIVIDER + "\n");
     }
 
-    private static boolean handleBye(String DIVIDER, String SPACES) {
+    private static boolean handleBye() {
         System.out.println(DIVIDER);
         System.out.println(SPACES + " Bye. Hope to see you again soon!");
         System.out.println(DIVIDER);
         return false; // Ends the loop
     }
 
-    private static void handleList(TaskList tasks, String DIVIDER) {
+    private static void handleList() {
         System.out.println(DIVIDER);
         tasks.listTasks();
         System.out.println(DIVIDER + "\n");
     }
 
-    private static void handleUnmark(TaskList tasks, String input, String DIVIDER, String SPACES) throws InvalidMarkException {
+    private static void handleUnmark(String input) throws InvalidMarkException {
         System.out.println(DIVIDER);
         String[] parts = input.split(" ");
         if (parts.length < 2) { // Check if the input has fewer than 2 parts
@@ -110,7 +125,7 @@ public class Terry {
         System.out.println(DIVIDER + "\n");
     }
 
-    private static void handleMark(TaskList tasks, String input, String DIVIDER, String SPACES) throws InvalidMarkException {
+    private static void handleMark(String input) throws InvalidMarkException {
         System.out.println(DIVIDER);
         String[] parts = input.trim().split(" ");
         if (parts.length < 2) {
@@ -128,19 +143,21 @@ public class Terry {
         System.out.println(DIVIDER + "\n");
     }
 
-    private static void handleTodo(TaskList tasks, String input, String DIVIDER, String SPACES) throws InvalidTodoException, TaskListFullException {
+    private static void handleTodo(String input) throws InvalidTodoException, TaskListFullException {
         System.out.println(DIVIDER);
         String[] parts = input.trim().split(" ");
         if (parts.length < 2) {
             throw new InvalidTodoException();
         }
         System.out.println(SPACES + " Got it. I've added this task:");
-        tasks.addTodo(input.substring(5));
+        Task todoTask = new Todo(input.substring(5));
+        tasks.addTask(todoTask);
+        appendTaskToFile(todoTask);
         System.out.println(SPACES + " Now you have " + tasks.getTaskCount() + " tasks in the list.");
         System.out.println(DIVIDER + "\n");
     }
 
-    private static void handleDeadline(TaskList tasks, String input, String DIVIDER, String SPACES) throws TaskListFullException, InvalidDeadlineException {
+    private static void handleDeadline(String input) throws TaskListFullException, InvalidDeadlineException {
         System.out.println(DIVIDER);
         if (!input.contains(" /by")) {
             throw new InvalidDeadlineException();
@@ -150,29 +167,33 @@ public class Terry {
             throw new InvalidDeadlineException();
         }
         System.out.println(SPACES + " Got it. I've added this task:");
-        tasks.addDeadline(deadline[0], deadline[1]);
+        Task deadlineTask = new Deadline(deadline[0], deadline[1]);
+        tasks.addTask(deadlineTask);
+        appendTaskToFile(deadlineTask);
         System.out.println(SPACES + " Now you have " + tasks.getTaskCount() + " tasks in the list.");
         System.out.println(DIVIDER + "\n");
     }
 
-    private static void handleEvent(TaskList tasks, String input, String DIVIDER, String SPACES) throws TaskListFullException, InvalidEventException {
+    private static void handleEvent(String input) throws TaskListFullException, InvalidEventException {
         System.out.println(DIVIDER);
-        if (!input.contains(" /from") || !input.contains(" /to")) {
+        if (!input.contains("/from") || !input.contains("/to")) {
             throw new InvalidEventException();
         }
         String[] event = input.substring(6).split("/");
-        event[1] = event[1].substring(5);
-        event[2] = event[2].substring(3);
+        event[1] = event[1].substring(4);
+        event[2] = event[2].substring(2);
         if (event[1].isEmpty() || event[2].isEmpty()) {
             throw new InvalidEventException();
         }
         System.out.println(SPACES + " Got it. I've added this task:");
-        tasks.addEvent(event[0], event);
+        Task eventTask = new Event(event[0], event[1].trim(), event[2].trim());
+        tasks.addTask(eventTask);
+        appendTaskToFile(eventTask);
         System.out.println(SPACES + " Now you have " + tasks.getTaskCount() + " tasks in the list.");
         System.out.println(DIVIDER + "\n");
     }
 
-    private static void handleHelp(String DIVIDER, String SPACES) {
+    private static void handleHelp() {
         System.out.println(DIVIDER);
         System.out.println(SPACES + " Here are the commands you can use:");
         System.out.println(SPACES + " 1. todo <task name> - Add a todo task");
@@ -185,7 +206,7 @@ public class Terry {
         System.out.println(DIVIDER + "\n");
     }
 
-    private static void handleDelete(TaskList tasks, String input, String DIVIDER, String SPACES) throws InvalidDeleteException {
+    private static void handleDelete(String input) throws InvalidDeleteException {
         System.out.println(DIVIDER);
         String[] parts = input.split(" ");
         if (parts.length < 2) {
@@ -202,9 +223,116 @@ public class Terry {
         System.out.println(DIVIDER + "\n");
     }
 
-    private static void handleUnknownCommand(String DIVIDER, String SPACES) {
+    private static void handleUnknownCommand() {
         System.out.println(DIVIDER);
         System.out.println(SPACES + " I don't recognize that command. Try 'help' for a list of commands.");
         System.out.println(DIVIDER + "\n");
+    }
+
+    private static void loadTasks() {
+        try {
+            Files.createDirectories(Paths.get(DATA_DIRECTORY));
+
+            if (!Files.exists(DATA_PATH)) {
+                Files.createFile(DATA_PATH);
+                return;
+            }
+
+            for (String line : Files.readAllLines(DATA_PATH)) {
+                try {
+                    Task task = parseStringToTask(line);
+                    if (task != null) {
+                        tasks.add(task);
+                    }
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Warning: Ignoring invalid task in file: " + line);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Warning: Error loading tasks from file. Starting with empty list.");
+        }
+    }
+
+    private static Task parseStringToTask(String line) {
+        String[] parts = line.split(" \\| ");
+        if (parts.length < 3) {
+            throw new IllegalArgumentException("Invalid task format");
+        }
+
+        String taskType = parts[0];
+        boolean isDone = "1".equals(parts[1]);
+        Task task;
+        String description = parts[2];
+
+        switch (taskType) {
+        case "T":
+            task = new Todo(description);
+            break;
+        case "D":
+            if (parts.length < 4) throw new IllegalArgumentException("Invalid deadline format");
+            task = new Deadline(description, parts[3]);
+            break;
+        case "E":
+            if (parts.length < 4) throw new IllegalArgumentException("Invalid event format");
+            String[] timeFrame = parts[3].split("-");
+            task = new Event(description, timeFrame[0].trim(), timeFrame[1]);
+            break;
+        default:
+            throw new IllegalArgumentException("Unknown task type: " + taskType);
+        }
+
+        if (isDone) {
+            task.mark();
+        }
+        return task;
+    }
+
+    private static void appendTaskToFile(Task task) {
+        try (FileWriter fw = new FileWriter(DATA_PATH.toString(), true)) {
+            fw.write(parseTaskToString(task) + System.lineSeparator());
+        } catch (IOException e) {
+            System.out.println("Error appending task to file: " + e.getMessage());
+        }
+    }
+
+    // Rewrites the entire file with the current tasks from the task list.
+    private static void rewriteTasksToFile() {
+        try (FileWriter fw = new FileWriter(DATA_PATH.toString())) {
+            for (int i = 0; i < tasks.getTaskCount(); i++) {
+                fw.write(parseTaskToString(tasks.getTask(i)) + System.lineSeparator());
+            }
+        } catch (IOException e) {
+            System.out.println("Error rewriting tasks to file: " + e.getMessage());
+        }
+    }
+
+    // Converts a Task object to a string in the format:
+    // [TaskType] | [isDone: 1 or 0] | [Description] | ([By] for Deadline or [StartTime] | [EndTime] for Event)
+    private static String parseTaskToString(Task task) {
+        StringBuilder sb = new StringBuilder();
+
+        if (task instanceof Todo) {
+            sb.append("T");
+        } else if (task instanceof Deadline) {
+            sb.append("D");
+        } else if (task instanceof Event) {
+            sb.append("E");
+        }
+
+        sb.append(" | ")
+                .append(task.isMarked() ? "1" : "0")
+                .append(" | ")
+                .append(task.getName());
+
+        if (task instanceof Deadline) {
+            sb.append(" | ").append(((Deadline) task).getDueDate());
+        } else if (task instanceof Event) {
+            sb.append(" | ")
+                    .append(((Event) task).getFrom())
+                    .append("-")
+                    .append(((Event) task).getTo());
+        }
+
+        return sb.toString();
     }
 }

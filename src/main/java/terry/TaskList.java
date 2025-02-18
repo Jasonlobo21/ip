@@ -8,11 +8,14 @@ import terry.task.Todo;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * Represents a list of tasks with a fixed capacity.
  */
 public class TaskList {
-    /** Array to store tasks. */
+    /**
+     * Array to store tasks.
+     */
     private List<Task> tasks;
 
     final int MAX_TASKS = 100;
@@ -20,6 +23,10 @@ public class TaskList {
 
     public TaskList() {
         tasks = new ArrayList<>();
+    }
+
+    public Task getTask(int index) {
+        return tasks.get(index);
     }
 
     public int getTaskCount() {
@@ -41,11 +48,12 @@ public class TaskList {
         tasks.add(new Deadline(taskName, dueDate));
         System.out.println("       " + tasks.get(tasks.size() - 1));
     }
-    public void addEvent(String taskName, String[] timePeriod) throws TaskListFullException {
+
+    public void addEvent(String taskName, String from, String to) throws TaskListFullException {
         if (tasks.size() >= 100) {
             throw new TaskListFullException();
         }
-        tasks.add(new Event(taskName, timePeriod));
+        tasks.add(new Event(taskName, from, to));
         System.out.println("       " + tasks.get(tasks.size() - 1));
     }
 
@@ -54,6 +62,7 @@ public class TaskList {
         System.out.println("         " + tasks.get(index - 1));
         tasks.remove(index - 1);
         System.out.println("       Now you have " + tasks.size() + " tasks in the list.");
+
     }
 
     /**
@@ -76,9 +85,6 @@ public class TaskList {
         System.out.println("       " + tasks.get(index - 1));
     }
 
-    /**
-     * Lists all tasks in the list along with their status.
-     */
     public void listTasks() {
         if (tasks.isEmpty()) {
             System.out.println("    No tasks available.");
@@ -88,4 +94,16 @@ public class TaskList {
             }
         }
     }
+
+    public void addTask(Task task) {
+        tasks.add(task);
+        System.out.println("       " + tasks.get(tasks.size() - 1));
+    }
+
+    public void add(Task task) {
+        tasks.add(task);
+    }
+
+
 }
+
