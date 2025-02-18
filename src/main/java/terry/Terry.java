@@ -22,18 +22,17 @@ public class Terry {
     private static TaskList tasks = new TaskList();
     private static final String SPACES = "    ";
     private static final String DIVIDER = SPACES + "____________________________________";
+    private static final String COMMAND_BYE = "bye";
+    private static final String COMMAND_LIST = "list";
+    private static final String COMMAND_MARK = "mark";
+    private static final String COMMAND_UNMARK = "unmark";
+    private static final String COMMAND_TODO = "todo";
+    private static final String COMMAND_DEADLINE = "deadline";
+    private static final String COMMAND_EVENT = "event";
+    private static final String COMMAND_HELP = "help";
+    private static final String COMMAND_DELETE = "delete";
 
     public static void main(String[] args) throws IOException {
-
-        final String COMMAND_BYE = "bye";
-        final String COMMAND_LIST = "list";
-        final String COMMAND_MARK = "mark";
-        final String COMMAND_UNMARK = "unmark";
-        final String COMMAND_TODO = "todo";
-        final String COMMAND_DEADLINE = "deadline";
-        final String COMMAND_EVENT = "event";
-        final String COMMAND_HELP = "help";
-        final String COMMAND_DELETE = "delete";
 
         handleGreetings();
         loadTasks();
@@ -41,46 +40,45 @@ public class Terry {
         boolean isLooping = true;
 
         while (isLooping) {
-
-            try{
+            try {
                 String input = in.nextLine();
                 String command = input.split(" ")[0].toLowerCase();
                 switch (command) {
-                    case COMMAND_BYE:
-                        isLooping = handleBye();
-                        break;
-                    case COMMAND_LIST:
-                        handleList();
-                        break;
-                    case COMMAND_UNMARK:
-                        handleUnmark(input);
-                        rewriteTasksToFile();
-                        break;
-                    case COMMAND_MARK:
-                        handleMark(input);
-                        rewriteTasksToFile();
-                        break;
-                    case COMMAND_TODO:
-                        handleTodo(input);
-                        break;
-                    case COMMAND_DEADLINE:
-                        handleDeadline(input);
-                        break;
-                    case COMMAND_EVENT:
-                        handleEvent(input);
-                        break;
-                    case COMMAND_HELP:
-                        handleHelp();
-                        break;
-                    case COMMAND_DELETE:
-                        handleDelete(input);
-                        break;
-                    default:
-                        handleUnknownCommand();
-                        break;
+                case COMMAND_BYE:
+                    isLooping = handleBye();
+                    break;
+                case COMMAND_LIST:
+                    handleList();
+                    break;
+                case COMMAND_UNMARK:
+                    handleUnmark(input);
+                    rewriteTasksToFile();
+                    break;
+                case COMMAND_MARK:
+                    handleMark(input);
+                    rewriteTasksToFile();
+                    break;
+                case COMMAND_TODO:
+                    handleTodo(input);
+                    break;
+                case COMMAND_DEADLINE:
+                    handleDeadline(input);
+                    break;
+                case COMMAND_EVENT:
+                    handleEvent(input);
+                    break;
+                case COMMAND_HELP:
+                    handleHelp();
+                    break;
+                case COMMAND_DELETE:
+                    handleDelete(input);
+                    break;
+                default:
+                    handleUnknownCommand();
+                    break;
                 }
             } catch (TaskListFullException | InvalidMarkException | InvalidTodoException | InvalidDeadlineException |
-                     InvalidEventException  | InvalidDeleteException e) {
+                     InvalidEventException | InvalidDeleteException e) {
                 System.out.println(e.getMessage());
                 System.out.println(DIVIDER + "\n");
             }
@@ -113,7 +111,7 @@ public class Terry {
         if (parts.length < 2) { // Check if the input has fewer than 2 parts
             throw new InvalidMarkException(tasks.getTaskCount(), "unmark");
         }
-        if(!parts[1].matches("\\d+")) {
+        if (!parts[1].matches("\\d+")) {
             throw new InvalidMarkException(tasks.getTaskCount(), "unmark");
         }
         int index = Integer.parseInt(parts[1]);
@@ -131,7 +129,7 @@ public class Terry {
         if (parts.length < 2) {
             throw new InvalidMarkException(tasks.getTaskCount(), "mark");
         }
-        if(!parts[1].matches("\\d+")) {
+        if (!parts[1].matches("\\d+")) {
             throw new InvalidMarkException(tasks.getTaskCount(), "mark");
         }
         int index = Integer.parseInt(parts[1]);
@@ -198,7 +196,7 @@ public class Terry {
         System.out.println(SPACES + " Here are the commands you can use:");
         System.out.println(SPACES + " 1. todo <task name> - Add a todo task");
         System.out.println(SPACES + " 2. deadline <task name> /by <due date> - Add a deadline task");
-        System.out.println(SPACES + " 3. event <task name> /at <time period> - Add an event task");
+        System.out.println(SPACES + " 3. event <task name> /from <time> /to <time> - Add an event task");
         System.out.println(SPACES + " 4. list - List all tasks");
         System.out.println(SPACES + " 5. mark <task number> - Mark a task as done");
         System.out.println(SPACES + " 6. unmark <task number> - Mark a task as not done");
@@ -212,7 +210,7 @@ public class Terry {
         if (parts.length < 2) {
             throw new InvalidDeleteException();
         }
-        if(!parts[1].matches("\\d+")) {
+        if (!parts[1].matches("\\d+")) {
             throw new InvalidDeleteException();
         }
         int index = Integer.parseInt(parts[1]);
@@ -296,7 +294,6 @@ public class Terry {
         }
     }
 
-    // Rewrites the entire file with the current tasks from the task list.
     private static void rewriteTasksToFile() {
         try (FileWriter fw = new FileWriter(DATA_PATH.toString())) {
             for (int i = 0; i < tasks.getTaskCount(); i++) {
@@ -307,8 +304,6 @@ public class Terry {
         }
     }
 
-    // Converts a Task object to a string in the format:
-    // [TaskType] | [isDone: 1 or 0] | [Description] | ([By] for Deadline or [StartTime] | [EndTime] for Event)
     private static String parseTaskToString(Task task) {
         StringBuilder sb = new StringBuilder();
 
@@ -333,7 +328,6 @@ public class Terry {
                     .append("-")
                     .append(((Event) task).getTo());
         }
-
         return sb.toString();
     }
 }
