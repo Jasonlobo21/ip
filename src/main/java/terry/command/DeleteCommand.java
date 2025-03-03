@@ -6,8 +6,18 @@ import terry.Ui;
 
 import terry.exception.TerryException;
 
+/**
+ * Command to delete a task from the task list.
+ */
 public class DeleteCommand extends Command {
 
+    /**
+     * Executes the delete command to remove a task.
+     *
+     * @param tasks the current TaskList
+     * @param input the user input containing the task number to delete
+     * @throws TerryException if the input format is invalid or the task number is out of range
+     */
     @Override
     public void execute(TaskList tasks, String input) throws TerryException {
         Ui.printDivider();
@@ -33,5 +43,4 @@ public class DeleteCommand extends Command {
         Ui.printWithSpaces("Now you have " + tasks.getSize() + " tasks in the list.");
         Ui.printDivider();
     }
-
 }

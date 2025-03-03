@@ -9,8 +9,22 @@ import terry.task.Event;
 import terry.task.Task;
 import terry.task.Todo;
 
+/**
+ * Command to add a new task (todo, deadline, or event) to the task list.
+ */
 public class AddTaskCommand extends Command {
 
+    /**
+     * Executes the add task command.
+     * <p>
+     * This method parses the input, creates the appropriate task type, adds it to the task list,
+     * updates storage, and prints the confirmation message.
+     * </p>
+     *
+     * @param tasks the current TaskList
+     * @param input the user input containing task details
+     * @throws TerryException if the input format is invalid
+     */
     @Override
     public void execute(TaskList tasks, String input) throws TerryException {
         Ui.printDivider();

@@ -4,8 +4,18 @@ import terry.TaskList;
 import terry.Ui;
 import terry.exception.TerryException;
 
+/**
+ * Command to search for tasks that contain a specified keyword.
+ */
 public class FindCommand extends Command {
 
+    /**
+     * Executes the find command to search and display matching tasks.
+     *
+     * @param tasks the current TaskList
+     * @param input the user input containing the keyword to search for
+     * @throws TerryException if the input format is invalid
+     */
     @Override
     public void execute(TaskList tasks, String input) throws TerryException {
         Ui.printDivider();

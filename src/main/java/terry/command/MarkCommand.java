@@ -5,8 +5,22 @@ import terry.TaskList;
 import terry.Ui;
 import terry.exception.TerryException;
 
+/**
+ * Command to mark or unmark a task as done.
+ */
 public class MarkCommand extends Command {
 
+    /**
+     * Executes the mark/unmark command.
+     * <p>
+     * This command marks a task as done if the command is "mark", or marks it as not done if the command is "unmark".
+     * It also updates the storage file after modification.
+     * </p>
+     *
+     * @param tasks the current TaskList
+     * @param input the user input containing the command and task number
+     * @throws TerryException if the input format is invalid or the task number is out of range
+     */
     @Override
     public void execute(TaskList tasks, String input) throws TerryException {
         Ui.printDivider();
