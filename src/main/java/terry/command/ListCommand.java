@@ -13,7 +13,7 @@ public class ListCommand extends Command {
             Ui.printWithSpaces("No tasks available.");
         } else {
             for (int i = 0; i < tasks.getSize(); i++) {
-                Ui.printWithSpaces((i + 1) + ". " + tasks.getTask(i));
+                Ui.printListedFormat(tasks, i);
             }
         }
         Ui.printDivider();

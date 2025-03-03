@@ -4,3 +4,4 @@ T | 1 | run
 D | 0 | run  | 9pm
 E | 0 | run  | 7pm-9pm
 
+T | 0 | book

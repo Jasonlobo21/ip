@@ -26,6 +26,9 @@ public class Parser {
             case "delete":
                 new DeleteCommand().execute(tasks, input);
                 return true;
+            case "find":
+                new FindCommand().execute(tasks, input);
+                return true;
             default:
                 Ui.printUnknownCommand();
                 return true;

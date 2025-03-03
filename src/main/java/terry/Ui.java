@@ -1,5 +1,7 @@
 package terry;
 
+import terry.task.Task;
+
 public class Ui {
 
     public static final String DIVIDER = "    ___________________________________________________________________";
@@ -40,5 +42,9 @@ public class Ui {
 
     public static void printUnknownCommand() {
         printMessage("I don't recognize that command. Type 'help' to see the list of commands.");
+    }
+
+    public static void printListedFormat(TaskList tasks, int index) {
+        printWithSpaces((index + 1) + ". " + tasks.getTask(index));
     }
 }
