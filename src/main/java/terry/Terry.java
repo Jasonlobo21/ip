@@ -1,6 +1,5 @@
 package terry;
 
-import terry.task.*;
 import java.util.Scanner;
 
 public class Terry {

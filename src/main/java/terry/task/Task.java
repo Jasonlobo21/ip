@@ -8,11 +8,6 @@ public class Task {
 
     private String taskType;
 
-    /**
-     * Creates a new task with the given name.
-     *
-     * @param name the name or description of the task.
-     */
     public Task(String name, String type) {
         this.name = name;
         isMarked = false;

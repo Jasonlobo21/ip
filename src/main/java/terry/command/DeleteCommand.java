@@ -3,15 +3,15 @@ package terry.command;
 import terry.Storage;
 import terry.TaskList;
 import terry.Ui;
+
 import terry.exception.TerryException;
 
-public class MarkCommand extends Command {
+public class DeleteCommand extends Command {
 
     @Override
     public void execute(TaskList tasks, String input) throws TerryException {
         Ui.printDivider();
-        String[] parts = input.trim().split(" ");
-
+        String[] parts = input.split(" ");
         if (parts.length < 2) {
             throw new TerryException("use 'help' to see the correct format");
         }
@@ -25,17 +25,13 @@ public class MarkCommand extends Command {
             throw new TerryException("Task number not in range");
         }
 
-        if(parts[0].equals("mark")) {
-            Ui.printWithSpaces("Nice! I've marked this task as done:");
-            tasks.markTask(index);
-        } else {
-            Ui.printWithSpaces("OK, I've marked this task as not done yet:");
-            tasks.unmarkTask(index);
-        }
-
+        tasks.deleteTask(index);
         Storage.rewriteTasksToFile(tasks);
 
+        Ui.printWithSpaces("Noted. I've removed this task:");
         Ui.printWithSpaces("  " + tasks.getTask(index - 1));
+        Ui.printWithSpaces("Now you have " + tasks.getSize() + " tasks in the list.");
         Ui.printDivider();
     }
+
 }

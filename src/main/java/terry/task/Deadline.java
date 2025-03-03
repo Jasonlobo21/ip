@@ -5,7 +5,7 @@ public class Deadline extends Task {
 
     public Deadline(String name, String dueDate) {
         super(name, "[D]");
-        this.dueDate = dueDate;
+        this.dueDate = dueDate.trim();
     }
 
     public String getDueDate() {

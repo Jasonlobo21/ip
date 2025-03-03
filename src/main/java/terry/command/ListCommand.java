@@ -6,9 +6,16 @@ import terry.Ui;
 public class ListCommand extends Command {
 
     @Override
-    public void execute(TaskList taskList) {
+    public void execute(TaskList tasks, String input) {
         Ui.printDivider();
-        taskList.listTasks();
+
+        if (tasks.isEmpty()) {
+            Ui.printWithSpaces("No tasks available.");
+        } else {
+            for (int i = 0; i < tasks.getSize(); i++) {
+                Ui.printWithSpaces((i + 1) + ". " + tasks.getTask(i));
+            }
+        }
         Ui.printDivider();
     }
 }

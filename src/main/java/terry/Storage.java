@@ -1,6 +1,9 @@
-package terry.task;
+package terry;
 
-import terry.TaskList;
+import terry.task.Deadline;
+import terry.task.Event;
+import terry.task.Task;
+import terry.task.Todo;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -26,7 +29,7 @@ public class Storage {
                 try {
                     Task task = parseStringToTask(line);
                     if (task != null) {
-                        tasks.loadTask(task);
+                        tasks.addTask(task);
                     }
                 } catch (IllegalArgumentException e) {
                     System.out.println("Warning: Ignoring invalid task in file: " + line);
@@ -49,20 +52,20 @@ public class Storage {
         String description = parts[2];
 
         switch (taskType) {
-            case "T":
-                task = new Todo(description);
-                break;
-            case "D":
-                if (parts.length < 4) throw new IllegalArgumentException("Invalid deadline format");
-                task = new Deadline(description, parts[3]);
-                break;
-            case "E":
-                if (parts.length < 4) throw new IllegalArgumentException("Invalid event format");
-                String[] timeFrame = parts[3].split("-");
-                task = new Event(description, timeFrame[0].trim(), timeFrame[1]);
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown task type: " + taskType);
+        case "T":
+            task = new Todo(description);
+            break;
+        case "D":
+            if (parts.length < 4) throw new IllegalArgumentException("Invalid deadline format");
+            task = new Deadline(description, parts[3]);
+            break;
+        case "E":
+            if (parts.length < 4) throw new IllegalArgumentException("Invalid event format");
+            String[] timeFrame = parts[3].split("-");
+            task = new Event(description, timeFrame[0].trim(), timeFrame[1]);
+            break;
+        default:
+            throw new IllegalArgumentException("Unknown task type: " + taskType);
         }
 
         if (isDone) {
@@ -81,8 +84,7 @@ public class Storage {
 
     public static void rewriteTasksToFile(TaskList tasks) {
         try (FileWriter fw = new FileWriter(DATA_PATH.toString())) {
-
-            for (int i = 0; i < tasks.getTaskCount(); i++) {
+            for (int i = 0; i < tasks.getSize(); i++) {
                 fw.write(parseTaskToString(tasks.getTask(i)) + System.lineSeparator());
             }
         } catch (IOException e) {
@@ -116,9 +118,4 @@ public class Storage {
         }
         return sb.toString();
     }
-
-
-
-
-
 }
