@@ -16,10 +16,16 @@ public class FindCommand extends Command {
 
         Ui.printWithSpaces("Here are the matching tasks in your list: ");
 
+        boolean notFound = true;
         for (int i = 0; i < tasks.getSize(); i++) {
             if (tasks.getTask(i).getName().contains(parts[1])) {
+                notFound = false;
                 Ui.printListedFormat(tasks, i);
             }
+        }
+
+        if (notFound) {
+            Ui.printWithSpaces("No matching '" + parts[1] +  "' tasks found.");
         }
         Ui.printDivider();
     }
