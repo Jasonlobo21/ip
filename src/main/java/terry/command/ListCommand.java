@@ -19,7 +19,7 @@ public class ListCommand extends Command {
         Ui.printDivider();
 
         if (tasks.isEmpty()) {
-            Ui.printWithSpaces("No tasks available.");
+            Ui.printWithSpaces(" No tasks available.");
         } else {
             for (int i = 0; i < tasks.getSize(); i++) {
                 Ui.printListedFormat(tasks, i);

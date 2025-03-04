@@ -27,6 +27,7 @@ public class Ui {
         System.out.println("    " + message);
     }
 
+
     /**
      * Prints a message enclosed by divider lines.
      *
@@ -37,9 +38,22 @@ public class Ui {
     }
 
     /**
+     * Prints Terry in ASCII to the user.
+     */
+    public static void printTerry() {
+        System.out.println("  _____                    ");
+        System.out.println(" |_   _|__ _ __ _ __ _   _ ");
+        System.out.println("   | |/ _ \\ '__| '__| | | |");
+        System.out.println("   | |  __/ |  | |  | |_| |");
+        System.out.println("   |_|\\___|_|  |_|   \\__, |");
+        System.out.println("                     |___/ ");
+    }
+
+    /**
      * Prints the greeting message to the user.
      */
     public static void printGreeting() {
+        printTerry();
         printMessage("Hello! I'm Terry" + NEW_LINE + "What can I do for you?");
     }
 

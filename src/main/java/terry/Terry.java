@@ -29,7 +29,7 @@ public class Terry {
 
         boolean isLooping = true;
         while (isLooping){
-            isLooping = Parser.handleInput(tasks, in.nextLine());
+            isLooping = Parser.handleInput(tasks, in.nextLine().trim());
         }
     }
 }

@@ -72,9 +72,9 @@ public class AddTaskCommand extends Command {
         tasks.addTask(newTask);
         Storage.appendTaskToFile(newTask);
 
-        Ui.printWithSpaces("Got it. I've added this task:");
+        Ui.printWithSpaces(" Got it. I've added this task:");
         Ui.printWithSpaces("   " + tasks.getTask(tasks.getSize() - 1));
-        Ui.printWithSpaces("Now you have " + tasks.getSize() + " tasks in the list.");
+        Ui.printWithSpaces(" Now you have " + tasks.getSize() + " tasks in the list.");
         Ui.printDivider();
     }
 }

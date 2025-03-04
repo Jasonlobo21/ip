@@ -35,12 +35,14 @@ public class DeleteCommand extends Command {
             throw new TerryException("Task number not in range");
         }
 
+
+        Ui.printWithSpaces(" Noted. I've removed this task:");
+        Ui.printWithSpaces("  " + tasks.getTask(index - 1));
+
         tasks.deleteTask(index);
         Storage.rewriteTasksToFile(tasks);
 
-        Ui.printWithSpaces("Noted. I've removed this task:");
-        Ui.printWithSpaces("  " + tasks.getTask(index - 1));
-        Ui.printWithSpaces("Now you have " + tasks.getSize() + " tasks in the list.");
+        Ui.printWithSpaces(" Now you have " + tasks.getSize() + " tasks in the list.");
         Ui.printDivider();
     }
 }

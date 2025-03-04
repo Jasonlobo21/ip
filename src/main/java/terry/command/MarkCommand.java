@@ -40,10 +40,10 @@ public class MarkCommand extends Command {
         }
 
         if(parts[0].equals("mark")) {
-            Ui.printWithSpaces("Nice! I've marked this task as done:");
+            Ui.printWithSpaces(" Nice! I've marked this task as done:");
             tasks.markTask(index);
         } else {
-            Ui.printWithSpaces("OK, I've marked this task as not done yet:");
+            Ui.printWithSpaces(" OK, I've marked this task as not done yet:");
             tasks.unmarkTask(index);
         }
 
