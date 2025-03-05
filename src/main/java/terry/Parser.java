@@ -1,7 +1,11 @@
 package terry;
 
-import terry.command.*;
-import terry.exception.*;
+import terry.command.AddTaskCommand;
+import terry.command.DeleteCommand;
+import terry.command.FindCommand;
+import terry.command.ListCommand;
+import terry.command.MarkCommand;
+import terry.exception.TerryException;
 
 /**
  * Parses user input and delegates commands to their respective handlers.
