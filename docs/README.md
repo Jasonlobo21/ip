@@ -1,4 +1,4 @@
-# Terry the Task Tracker User Guide
+# Terry the Trusty Task Tracker User Guide
 ![img.png](images/terry.png)
 
 Terry the Trusty Task Tracker is a CLI-based desktop app for tracking tasks which helps users remember all the tasks they need to get done.
