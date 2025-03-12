@@ -79,7 +79,7 @@ public class Ui {
                 + "5. mark <task number> - Mark a task as done" + NEW_LINE
                 + "6. unmark <task number> - Mark a task as not done" + NEW_LINE
                 + "7. delete <task number> - Delete a task" + NEW_LINE
-                + "8. bye - Exit the program" + NEW_LINE);
+                + "8. bye - Exit the program");
     }
 
     /**
