@@ -39,7 +39,7 @@ public class MarkCommand extends Command {
             throw new TerryException("Task number not in range");
         }
 
-        if(parts[0].equals("mark")) {
+        if (parts[0].equals("mark")) {
             Ui.printWithSpaces(" Nice! I've marked this task as done:");
             tasks.markTask(index);
         } else {

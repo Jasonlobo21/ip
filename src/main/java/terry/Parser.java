@@ -28,10 +28,13 @@ public class Parser {
             case "list":
                 new ListCommand().execute(tasks, input);
                 return true;
-            case "unmark", "mark":
+            case "unmark":
+            case "mark":
                 new MarkCommand().execute(tasks, input);
                 return true;
-            case "todo", "deadline", "event":
+            case "todo":
+            case "deadline":
+            case "event":
                 new AddTaskCommand().execute(tasks, input);
                 return true;
             case "help":

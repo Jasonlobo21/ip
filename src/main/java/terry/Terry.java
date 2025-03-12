@@ -28,7 +28,7 @@ public class Terry {
         Scanner in = new Scanner(System.in);
 
         boolean isLooping = true;
-        while (isLooping){
+        while (isLooping) {
             isLooping = Parser.handleInput(tasks, in.nextLine().trim());
         }
     }
